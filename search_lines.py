@@ -81,5 +81,6 @@ while counter == 0:
 			  results.write("%s" % item)
 			results.write( "Total %d matches" % counter)
 			results.close()
+			counter = 0
 		else:
-			break
+			counter = 0
