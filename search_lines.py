@@ -14,6 +14,7 @@ while counter == 0:
 	text1 = text + " "
 	text2 = text + ","
 	text3 = text + "."
+	text4 = text + "?"
 
 	series = ["How I Met Your Mother", "The Big Bang Theory","Game of Thrones","House of Cards","Breaking Bad"]
 	pick_series = int(raw_input('Search in a TV Show? Pick a number.\n0.ALL\n1.How I Met Your Mother\n2.Big Bang Theory\n3.Game of Thrones\n4.House of Cards\n5.Breaking Bad\n> '))
@@ -66,6 +67,9 @@ while counter == 0:
 				counter = counter + 1
 				check_phrases()
 			elif text3 in line.lower():
+				counter = counter + 1
+				check_phrases()
+			elif text4 in line.lower():
 				counter = counter + 1
 				check_phrases()
 		fp.close()	
