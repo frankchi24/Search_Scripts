@@ -7,6 +7,7 @@ import glob
 import linecache
 import fnmatch
 import os
+import re
 #search in one or serveral specific tv series
 counter = 0 
 while counter == 0:
@@ -15,6 +16,8 @@ while counter == 0:
 	text2 = text + ","
 	text3 = text + "."
 	text4 = text + "?"
+	text5 = text + "!"
+
 
 	series = ["How I Met Your Mother", "The Big Bang Theory","Game of Thrones","House of Cards","Breaking Bad"]
 	pick_series = int(raw_input('Search in a TV Show? Pick a number.\n0.ALL\n1.How I Met Your Mother\n2.Big Bang Theory\n3.Game of Thrones\n4.House of Cards\n5.Breaking Bad\n> '))
@@ -34,7 +37,7 @@ while counter == 0:
 	path = '/home/frank/Dropbox/ScriptSearch/%s/%s/*.srt' % (series_name, season)
 	files = glob.glob(path)
 	result_list = []
-	#check if the input text matches the 
+	#print phrases, print our the lines the prases are in
 	def check_phrases():
 		filename = os.path.basename(fp.name)
 		line_before_last_line = linecache.getline(file, i-1)
@@ -59,7 +62,9 @@ while counter == 0:
 	#run check phrases function with each line in each subtitles file 
 	for file in files:
 		fp = open (file, 'r')
+ 
 		for i, line in enumerate(fp):
+			# if text = re.findall(r'%s'%text,line.lower())
 			if text1 in line.lower():
 				counter = counter + 1
 				check_phrases()
@@ -70,6 +75,9 @@ while counter == 0:
 				counter = counter + 1
 				check_phrases()
 			elif text4 in line.lower():
+				counter = counter + 1
+				check_phrases()
+			elif text5 in line.lower():
 				counter = counter + 1
 				check_phrases()
 		fp.close()	
