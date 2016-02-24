@@ -18,7 +18,6 @@ def scope(os_path,series,pick_series):
 			return files
 
 		#2.pick all tv shows in the database and search through them all
-
 		elif pick_series == 0:
 			series_name = "*" 
 			season ="*"
@@ -58,7 +57,7 @@ def check_lines_in_files(files,text,counter,result_list):
 				result_list.append(
 				"<Number %d match>\n<In file '%s'>\n<In line %d in the file>" % (counter,filename,i),
 				)
-				while lines_presented <= 1:
+				while lines_presented <= 3:
 					result_list.append(
 						linecache.getline(file, i+lines_presented)
 						)
