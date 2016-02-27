@@ -3,8 +3,9 @@ import linecache
 import fnmatch
 import os
 import re
-
-
+import nltk
+import tokenize
+result_list = []
 def scope(os_path,series,pick_series):
 		if pick_series > 0 and pick_series!= 99:
 			series_name = series[int(pick_series)-1]
@@ -47,6 +48,8 @@ def scope(os_path,series,pick_series):
 
 #run check phrases function with each line in each subtitles file 
 def check_lines_in_files(files,text,counter,result_list):
+	#three different scopes, 
+	#1.pick a tv show and a season and search through them
 	for file in files:
 		fp = open (file, 'r')
 		for i, line in enumerate(fp):
@@ -65,10 +68,10 @@ def check_lines_in_files(files,text,counter,result_list):
 				result_list.append(
 				"------------------------------------------------------\n"
 				)
-				for item in result_list:
-					print item
 				linecache.clearcache()
 		fp.close()	
+	for x in result_list:
+		print x
 	print "Total %d matches" % counter
 	if counter > 0:
 		result_fiename = text + ".txt"
@@ -84,5 +87,44 @@ def check_lines_in_files(files,text,counter,result_list):
 			counter = 0
 
 
+# def phrases_or_word(text):
+# 	if re.findall(r' ',text.lower()):
+# 		print text
 
 
+# def check_phrases(files,text,counter,result_list):
+# 	for file in files:
+# 		fp = open (file, 'r')
+# 		for i, line in enumerate(fp):
+# 			if re.findall(r'%s\s|%s.|%s\,|%s\?|%s\!'%(text,text,text,text,text),line.lower()):
+# 				counter = counter + 1
+# 				filename = os.path.basename(fp.name)
+# 				lines_presented = -2			
+# 				result_list.append(
+# 				"<Number %d match>\n<In file '%s'>\n<In line %d in the file>" % (counter,filename,i),
+# 				)
+# 				while lines_presented <= 3:
+# 					result_list.append(
+# 						linecache.getline(file, i+lines_presented)
+# 						)
+# 					lines_presented = lines_presented + 1
+# 				result_list.append(
+# 				"------------------------------------------------------\n"
+# 				)
+# 				for item in result_list:
+# 					print item
+# 				linecache.clearcache()
+# 		fp.close()	
+# 	print "Total %d matches" % counter
+# 	if counter > 0:
+# 		result_fiename = text + ".txt"
+# 		make_files =  int(raw_input("Do you wanna print the results out as txt files?\n1.Yes\n2.No\n> "))
+# 		if make_files == 1:
+# 			results = open("results/%s"%result_fiename,"w")
+# 			for item in result_list:
+# 				results.write(item) 
+# 			results.write( "Total %d matches" % counter)
+# 			results.close()
+# 			counter = 0
+# 		else:
+# 			counter = 0

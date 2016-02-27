@@ -1,7 +1,7 @@
 # Search_Scripts
-This is a little tool helpping me to teach English in TV Shows.
+This is a little tool helping me teach English with some American TV Shows.
 
-User can search sentences and words in TV series scripts. They can search in a specific season or all seasons, they can also search multiple tv shows.
+User can search sentences and words in TV series scripts. They can search in a specific season or all seasons, they can also search multiple tv shows. They can also print the results as txt files if they want to.
 
 TV Shows supported:
 "How I Met Your Mother", 

@@ -45,15 +45,3 @@ while counter == 0:
 	result_list = []			
 	check_lines_in_files(files,text,counter,result_list)
 	#create a txt file with the results
-	if counter > 0:
-		result_fiename = text + ".txt"
-		make_files =  int(raw_input("Do you wanna print the results out as txt files?\n1.Yes\n2.No\n> "))
-		if make_files == 1:
-			results = open("results/%s"%result_fiename,"w")
-			for item in result_list:
-				results.write(item) 
-			results.write( "Total %d matches" % counter)
-			results.close()
-			counter = 0
-		else:
-			counter = 0
