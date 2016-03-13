@@ -5,7 +5,7 @@ import os
 import re
 import nltk
 import tokenize
-result_list = []
+
 def scope(os_path,series,pick_series):
 		if pick_series > 0 and pick_series!= 99:
 			series_name = series[int(pick_series)-1]
@@ -47,31 +47,32 @@ def scope(os_path,series,pick_series):
 	
 
 #run check phrases function with each line in each subtitles file 
-def check_lines_in_files(files,text,counter,result_list):
+def check_words(files,text,counter,result_list):
 	#three different scopes, 
 	#1.pick a tv show and a season and search through them
 	for file in files:
 		fp = open (file, 'r')
 		for i, line in enumerate(fp):
-			if re.findall(r'%s\s|%s.|%s\,|%s\?|%s\!'%(text,text,text,text,text),line.lower()):
+			if re.search(r'%s\s|%s.|%s\,|%s\?|%s\!'%(text,text,text,text,text),line.lower()):
 				counter = counter + 1
 				filename = os.path.basename(fp.name)
-				lines_presented = -2			
+				lines_presented = -5			
 				result_list.append(
-				"<Number %d match>\n<In file '%s'>\n<In line %d in the file>" % (counter,filename,i),
+				"<Number %d match>\n<In line %d in the file>\n<In file '%s'>" % (counter,i,filename),
 				)
-				while lines_presented <= 3:
-					result_list.append(
-						linecache.getline(file, i+lines_presented)
-						)
+				while lines_presented <= 5:
+					if re.findall(r'\w',linecache.getline(file, i+lines_presented)):
+						result_list.append(
+							linecache.getline(file, i+lines_presented)
+							)
 					lines_presented = lines_presented + 1
 				result_list.append(
 				"------------------------------------------------------\n"
 				)
 				linecache.clearcache()
 		fp.close()	
-	for x in result_list:
-		print x
+	for item in result_list:
+		print item
 	print "Total %d matches" % counter
 	if counter > 0:
 		result_fiename = text + ".txt"
@@ -87,44 +88,44 @@ def check_lines_in_files(files,text,counter,result_list):
 			counter = 0
 
 
-# def phrases_or_word(text):
-# 	if re.findall(r' ',text.lower()):
-# 		print text
+def text_is_word(text):
+	if re.search(r'\s',text):
+		return False
+	else:
+		return True
+
+def check_phrases(files,text,counter,result_list):
+	range_list = []
+	tokens = nltk.word_tokenize(text)
+	for file in files:
+		fp = open (file, 'r')
+		for i, line in enumerate(fp):
+			# search the first word in the phrases, 
+			if re.findall(r'%s\s'%(tokens[0]),line.lower()):
+				for x in range(-1,8):
+					linecache_yo = linecache.getline(file,i+x)
+					if re.findall(r'\w',linecache_yo):
+						range_list.append(linecache_yo)
+				# once found, get the adjacent lines in a list
+				# search for the remaining words in the list
+
+				# for token in tokens:
+				# 	if re.findall(r'%s'%(token),)
 
 
-# def check_phrases(files,text,counter,result_list):
-# 	for file in files:
-# 		fp = open (file, 'r')
-# 		for i, line in enumerate(fp):
-# 			if re.findall(r'%s\s|%s.|%s\,|%s\?|%s\!'%(text,text,text,text,text),line.lower()):
-# 				counter = counter + 1
-# 				filename = os.path.basename(fp.name)
-# 				lines_presented = -2			
-# 				result_list.append(
-# 				"<Number %d match>\n<In file '%s'>\n<In line %d in the file>" % (counter,filename,i),
-# 				)
-# 				while lines_presented <= 3:
-# 					result_list.append(
-# 						linecache.getline(file, i+lines_presented)
-# 						)
-# 					lines_presented = lines_presented + 1
-# 				result_list.append(
-# 				"------------------------------------------------------\n"
-# 				)
-# 				for item in result_list:
-# 					print item
-# 				linecache.clearcache()
-# 		fp.close()	
-# 	print "Total %d matches" % counter
-# 	if counter > 0:
-# 		result_fiename = text + ".txt"
-# 		make_files =  int(raw_input("Do you wanna print the results out as txt files?\n1.Yes\n2.No\n> "))
-# 		if make_files == 1:
-# 			results = open("results/%s"%result_fiename,"w")
-# 			for item in result_list:
-# 				results.write(item) 
-# 			results.write( "Total %d matches" % counter)
-# 			results.close()
-# 			counter = 0
-# 		else:
-# 			counter = 0
+				result_list.append()
+				range_list = []
+
+		fp.close()
+
+
+
+	for y in range_list:
+		print y
+	
+
+
+
+
+
+

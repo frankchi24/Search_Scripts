@@ -7,18 +7,25 @@
 # 5. able to determine the how many lines are presented
 
 # Features to add
-# able to search by each multiple series or seasons or episodes
+# create a data base version instead of storing files in the os
+# able to search by each multiple series or seasons
+# able to search from multiple episodes
+
 # able to search phrases and words separately
 # able to choose different stems, or search a lists of words 
+# able to list out terms that users don't wanna search
+# make a web application version allow users to sign up and log in and search through their favorite tv seires
+
 import glob
 import linecache
 import fnmatch
 import os
 import re
-from check_words import scope,check_lines_in_files
+from check_words import scope,check_words,text_is_word,check_phrases
 #search in one or serveral specific tv series
-counter = 0  
+counter = 0 
 while counter == 0:
+	result_list = []
 	text = raw_input('Hi!!\nLooking for a phrase or word?\n> ').lower()
 	#for windows
 	# os_path = 'C:\Users\Frank/Desktop/ScriptSearch'
@@ -42,6 +49,8 @@ while counter == 0:
 	#three different scopes, 
 	#1.pick a tv show and a season and search through them
 	files = scope(os_path,series,pick_series)
-	result_list = []			
-	check_lines_in_files(files,text,counter,result_list)
+	if text_is_word(text) == True:
+		check_words(files,text,counter,result_list)
+	else:
+		check_phrases(files,text,counter,result_list)
 	#create a txt file with the results
