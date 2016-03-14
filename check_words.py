@@ -44,7 +44,12 @@ def scope(os_path,series,pick_series):
 			for number in numbers_user_pick:			
 				files = files + glob.glob(os_path +'%s/%s/*.srt' % (series[number-1],"*"))
 			return files
-	
+
+def text_is_word(text):
+	if re.search(r'\s',text):
+		return False
+	else:
+		return True
 
 #run check phrases function with each line in each subtitles file 
 def check_words(files,text,counter,result_list):
@@ -74,6 +79,47 @@ def check_words(files,text,counter,result_list):
 	for item in result_list:
 		print item
 	print "Total %d matches" % counter
+	print_or_not(counter,text,result_list)
+
+
+
+def check_phrases(files,text,counter,result_list):
+	tokens = nltk.word_tokenize(text)
+	range_list = []
+	for file in files:
+		fp = open (file, 'r')
+		filename = os.path.basename(fp.name)
+		for i, line in enumerate(fp):
+			# search the first word in the phrases, 
+			if re.search(r'%s\s'%(tokens[0]),line.lower()):
+				for x in range(-1,4):
+					linecache_yo = linecache.getline(file,i+x)
+					if re.search(r'\w',linecache_yo):
+						range_list.append(linecache_yo)
+				# once found, get the adjacent lines in a list
+				# search for the remaining words in the list
+				range_string = ''.join(range_list)
+				if all(re.search(r'%s'%(token),range_string) for token in tokens):
+					result_list.append(
+					"<Number %d match>\n<In line %d in the file>\n<In file '%s'>" % (counter,i,filename),
+					)
+					result_list.append(range_string)
+					result_list.append("---------------------------")
+					counter = counter + 1
+				range_list = []
+		fp.close()
+	for item in result_list:
+		print item
+	print "Total %d matches" % counter
+	print_or_not(counter,text,result_list) 
+
+
+
+
+	
+
+
+def print_or_not(counter,text,result_list):
 	if counter > 0:
 		result_fiename = text + ".txt"
 		make_files =  int(raw_input("Do you wanna print the results out as txt files?\n1.Yes\n2.No\n> "))
@@ -86,46 +132,6 @@ def check_words(files,text,counter,result_list):
 			counter = 0
 		else:
 			counter = 0
-
-
-def text_is_word(text):
-	if re.search(r'\s',text):
-		return False
-	else:
-		return True
-
-def check_phrases(files,text,counter,result_list):
-	range_list = []
-	tokens = nltk.word_tokenize(text)
-	for file in files:
-		fp = open (file, 'r')
-		for i, line in enumerate(fp):
-			# search the first word in the phrases, 
-			if re.findall(r'%s\s'%(tokens[0]),line.lower()):
-				for x in range(-1,8):
-					linecache_yo = linecache.getline(file,i+x)
-					if re.findall(r'\w',linecache_yo):
-						range_list.append(linecache_yo)
-				# once found, get the adjacent lines in a list
-				# search for the remaining words in the list
-
-				# for token in tokens:
-				# 	if re.findall(r'%s'%(token),)
-
-
-				result_list.append()
-				range_list = []
-
-		fp.close()
-
-
-
-	for y in range_list:
-		print y
-	
-
-
-
 
 
 
