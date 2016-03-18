@@ -5,14 +5,15 @@
 # 3. search and present words in sentences and episodes
 # 4. print the results as txt files
 # 5. able to determine the how many lines are presented
+# 6. able to search phrases and words separately
+# 7. able to search a lists of words
+
 
 # Features to add
 # create a data base version instead of storing files in the os
 # able to search by each multiple series or seasons
 # able to search from multiple episodes
-
-# able to search phrases and words separately
-# able to choose different stems, or search a lists of words 
+# able to choose different stems, or  
 # able to list out terms that users don't wanna search
 # make a web application version allow users to sign up and log in and search through their favorite tv seires
 
@@ -21,12 +22,15 @@ import linecache
 import fnmatch
 import os
 import re
-from check_words import scope,check_words,text_is_word,check_phrases
+from search_functions import scope,check_words,text_is_word,check_phrases
 #search in one or serveral specific tv series
 counter = 0 
 while counter == 0:
+	text = raw_input('Hi!!\nLooking for a word?\n> ').lower()
+	#if there are multiple words
 	result_list = []
-	text = raw_input('Hi!!\nLooking for a phrase or word?\n> ').lower()
+	if re.findall(r',',text):
+		text = re.split(r',+',text.lower())
 	#for windows
 	# os_path = 'C:\Users\Frank/Desktop/ScriptSearch'
 	#for linux=
@@ -49,8 +53,10 @@ while counter == 0:
 	#three different scopes, 
 	#1.pick a tv show and a season and search through them
 	files = scope(os_path,series,pick_series)
-	if text_is_word(text) == True:
+	if type(text)  ==  str:
 		check_words(files,text,counter,result_list)
-	else:
-		check_phrases(files,text,counter,result_list)
-	#create a txt file with the results
+	elif type(text) == list:
+		for t in text:
+			check_words(files,t,counter,result_list)
+
+	

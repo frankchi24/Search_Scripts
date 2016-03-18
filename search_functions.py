@@ -6,6 +6,7 @@ import re
 import nltk
 import tokenize
 
+
 def scope(os_path,series,pick_series):
 		if pick_series > 0 and pick_series!= 99:
 			series_name = series[int(pick_series)-1]
@@ -78,7 +79,7 @@ def check_words(files,text,counter,result_list):
 		fp.close()	
 	for item in result_list:
 		print item
-	print "Total %d matches" % counter
+	print "Total %d matches for \"%s\"" % (counter,text)
 	print_or_not(counter,text,result_list)
 
 
@@ -94,7 +95,7 @@ def check_phrases(files,text,counter,result_list):
 			if re.search(r'%s\s'%(tokens[0]),line.lower()):
 				for x in range(-1,4):
 					linecache_yo = linecache.getline(file,i+x)
-					if re.search(r'\w',linecache_yo):
+					if re.search(r'\w',linecache_yo.lower()):
 						range_list.append(linecache_yo)
 				# once found, get the adjacent lines in a list
 				# search for the remaining words in the list
@@ -113,10 +114,6 @@ def check_phrases(files,text,counter,result_list):
 	print "Total %d matches" % counter
 	print_or_not(counter,text,result_list) 
 
-
-
-
-	
 
 
 def print_or_not(counter,text,result_list):
