@@ -59,7 +59,8 @@ def check_words(files,text,counter,result_list):
 	for file in files:
 		fp = open (file, 'r')
 		for i, line in enumerate(fp):
-			if re.search(r'%s\s|%s.|%s\,|%s\?|%s\!'%(text,text,text,text,text),line.lower()):
+			if re.search(r'\b%s\b'%(text),line.lower()):
+				#'\bfoo\b' matches 'foo', 'foo.', '(foo)', 'bar foo baz' but not 'foobar' or 'foo3'.
 				counter = counter + 1
 				filename = os.path.basename(fp.name)
 				lines_presented = -5			
@@ -67,10 +68,11 @@ def check_words(files,text,counter,result_list):
 				"<Number %d match>\n<In line %d in the file>\n<In file '%s'>" % (counter,i,filename),
 				)
 				while lines_presented <= 5:
-					if re.findall(r'\w',linecache.getline(file, i+lines_presented)):
-						result_list.append(
-							linecache.getline(file, i+lines_presented)
-							)
+					if re.search(r'^\w',linecache.getline(file, i+lines_presented)):
+						if re.search(r'^\D',linecache.getline(file, i+lines_presented)):
+							result_list.append(linecache.getline(file, i+lines_presented))
+					if re.search(r'-->',linecache.getline(file, i+lines_presented)):
+						result_list.append(linecache.getline(file, i+lines_presented))
 					lines_presented = lines_presented + 1
 				result_list.append(
 				"------------------------------------------------------\n"
